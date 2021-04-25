@@ -1,22 +1,20 @@
 package com.app.issue.converter;
 
-import com.app.issue.dto.CreateIssue;
+import com.app.issue.dto.CreateIssueRequest;
 import com.app.issue.entity.Issue;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
-public class CreateIssueToIssue implements Converter<CreateIssue, Issue> {
+public class CreateIssueToIssue implements Converter<CreateIssueRequest, Issue> {
 
     @Override
-    public Issue convert(CreateIssue createIssue) {
+    public Issue convert(CreateIssueRequest createIssueRequest) {
 
         return new Issue(
-                createIssue.getManufacturerName(),
-                createIssue.getSubstanceName(),
-                createIssue.getProductNumbers()
+                createIssueRequest.getManufacturerName(),
+                createIssueRequest.getSubstanceName(),
+                createIssueRequest.getProductNumbers()
         );
     }
 }

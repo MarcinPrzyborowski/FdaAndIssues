@@ -1,7 +1,7 @@
 package com.app.issue.controller;
 
-import com.app.issue.dto.CreateIssue;
-import com.app.issue.dto.IssueView;
+import com.app.issue.dto.CreateIssueRequest;
+import com.app.issue.dto.IssueResponse;
 import com.app.issue.entity.Issue;
 import com.app.issue.service.IssueService;
 import org.springframework.http.HttpStatus;
@@ -24,19 +24,19 @@ public class IssueController {
         this.issueService = issueService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<IssueView>> getCollection() {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<IssueResponse>> getCollection() {
         return new ResponseEntity<>(this.issueService.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<IssueView> getById(@PathVariable("id") Long id) {
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<IssueResponse> getById(@PathVariable("id") Long id) {
         return ResponseEntity.of(this.issueService.findById(id));
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Issue> create(@Valid @RequestBody CreateIssue createIssue) {
-        Issue issue = this.issueService.create(createIssue);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Issue> create(@Valid @RequestBody CreateIssueRequest createIssueRequest) {
+        final Issue issue = this.issueService.create(createIssueRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

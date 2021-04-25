@@ -7,9 +7,9 @@ import java.util.Set;
 
 @AllArgsConstructor
 @Getter
-public class IssueView {
+public class IssueResponse {
     private final Long id;
     private final String manufacturerName;
     private final String substanceName;
-    private final Set<Integer> productNumbers;
+    private final Set<String> productNumbers;
 }

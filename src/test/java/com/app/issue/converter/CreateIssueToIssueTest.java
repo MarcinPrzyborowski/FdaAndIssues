@@ -1,6 +1,6 @@
 package com.app.issue.converter;
 
-import com.app.issue.dto.CreateIssue;
+import com.app.issue.dto.CreateIssueRequest;
 import com.app.issue.entity.Issue;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.mockito.internal.util.collections.Sets;
 
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 public class CreateIssueToIssueTest {
 
@@ -26,14 +26,14 @@ public class CreateIssueToIssueTest {
 
     @Test
     public void convertWithValidParametersWillCreateNewIssue() {
-        Set<Integer> productNumbers = Sets.newSet(1,2,3);
-        CreateIssue createIssue = new CreateIssue(
+        Set<String> productNumbers = Sets.newSet("1", "2", "3");
+        CreateIssueRequest createIssueRequest = new CreateIssueRequest(
                 "Name",
                 "SubstanceName",
                 productNumbers
         );
 
-        Issue issue = converter.convert(createIssue);
+        Issue issue = converter.convert(createIssueRequest);
 
         assertSame("Name", issue.getManufacturerName());
         assertSame("SubstanceName", issue.getSubstanceName());

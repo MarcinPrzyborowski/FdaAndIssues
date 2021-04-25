@@ -2,12 +2,13 @@ package com.app.issue.service;
 
 import com.app.issue.converter.CreateIssueToIssue;
 import com.app.issue.converter.IssueToIssueView;
-import com.app.issue.dto.CreateIssue;
-import com.app.issue.dto.IssueView;
+import com.app.issue.dto.CreateIssueRequest;
+import com.app.issue.dto.IssueResponse;
 import com.app.issue.entity.Issue;
 import com.app.issue.repository.IssueRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,28 +30,29 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public Issue create(CreateIssue createIssue) {
-        final Issue issue = createIssueToIssue.convert(Objects.requireNonNull(createIssue));
+    @Transactional(rollbackOn = Exception.class)
+    public Issue create(CreateIssueRequest createIssueRequest) {
+        final Issue issue = createIssueToIssue.convert(Objects.requireNonNull(createIssueRequest));
         issueRepository.save(issue);
 
         return issue;
     }
 
     @Override
-    public List<IssueView> findAll() {
+    public List<IssueResponse> findAll() {
         return issueRepository.findAll().stream().map(issueToIssueView::convert).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<IssueView> findById(Long id) {
+    public Optional<IssueResponse> findById(Long id) {
         Optional<Issue> issue = issueRepository.findById(id);
         if (!issue.isPresent()) {
             return Optional.empty();
         }
 
-        IssueView issueView = issueToIssueView.convert(issue.get());
+        IssueResponse issueResponse = issueToIssueView.convert(issue.get());
 
-        return Optional.of(issueView);
+        return Optional.of(issueResponse);
     }
 
 }

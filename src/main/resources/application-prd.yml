@@ -1,0 +1,12 @@
+#spring:
+# datasource:
+#   url: PROD_URL
+#   driver-class-name: PROD_DRIVER
+#   username: PROD_USER
+#   data-password: PROD_PASS
+# jpa:
+#   database-platform: PROD_DIALECT
+#   database: PROD_DATABASE
+#   hibernate:
+#     ddl-auto: none
+
