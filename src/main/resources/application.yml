@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: fda-and-issues
+  profiles:
+    active: local

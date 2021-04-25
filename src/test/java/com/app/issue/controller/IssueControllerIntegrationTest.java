@@ -4,27 +4,20 @@ import com.app.AppApplication;
 import com.app.issue.service.IssueServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -54,13 +47,13 @@ public class IssueControllerIntegrationTest {
 
     @Test
     public void getById() throws Exception {
-        mockMvc.perform(get("/issues/1"))
+        mockMvc.perform(get("/issues/959595"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void create() throws Exception {
-        String json = "{\"manufacturerName\":\"string\",\"substanceName\":\"string\",\"productNumbers\":[0]}";
+        String json = "{\"manufacturerName\":\"string\",\"substanceName\":\"string\",\"productNumbers\":[\"0\"]}";
         mockMvc.perform(
                 post("/issues")
                         .contentType(MediaType.APPLICATION_JSON)

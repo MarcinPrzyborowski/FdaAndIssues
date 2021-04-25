@@ -1,19 +1,19 @@
 package com.app.issue.converter;
 
-import com.app.issue.dto.IssueView;
+import com.app.issue.dto.IssueResponse;
 import com.app.issue.entity.Issue;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.mockito.internal.util.collections.Sets;
 
 import java.util.Set;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
-public class IssueToIssueViewTest {
+public class IssueToIssueResponseTest {
 
     IssueToIssueView converter;
 
@@ -29,7 +29,7 @@ public class IssueToIssueViewTest {
 
     @Test
     public void convertWithValidParametersWillCreateNewIssue() {
-        Set<Integer> productNumbers = Sets.newSet(1,2,3);
+        Set<String> productNumbers = Sets.newSet("1", "2", "3");
 
         Issue issue = mock(Issue.class);
 
@@ -38,11 +38,11 @@ public class IssueToIssueViewTest {
         when(issue.getSubstanceName()).thenReturn("SubstanceName");
         when(issue.getProductNumbers()).thenReturn(productNumbers);
 
-        IssueView issueView = converter.convert(issue);
+        IssueResponse issueResponse = converter.convert(issue);
 
-        assertSame(1L, issueView.getId());
-        assertSame("Name", issueView.getManufacturerName());
-        assertSame("SubstanceName", issueView.getSubstanceName());
-        assertSame(productNumbers, issueView.getProductNumbers());
+        assertSame(1L, issueResponse.getId());
+        assertSame("Name", issueResponse.getManufacturerName());
+        assertSame("SubstanceName", issueResponse.getSubstanceName());
+        assertSame(productNumbers, issueResponse.getProductNumbers());
     }
 }

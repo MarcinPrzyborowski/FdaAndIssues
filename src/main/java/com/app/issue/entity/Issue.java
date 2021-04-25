@@ -18,12 +18,12 @@ public class Issue {
     private String substanceName;
 
     @ElementCollection
-    private Set<Integer> productNumbers;
+    private Set<String> productNumbers;
 
     public Issue() {
     }
 
-    public Issue(String manufacturerName, String substanceName, Set<Integer> productNumbers) {
+    public Issue(String manufacturerName, String substanceName, Set<String> productNumbers) {
         this.manufacturerName = manufacturerName;
         this.substanceName = substanceName;
         this.productNumbers = productNumbers;

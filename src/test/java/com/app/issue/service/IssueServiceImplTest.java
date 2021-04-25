@@ -2,15 +2,14 @@ package com.app.issue.service;
 
 import com.app.issue.converter.CreateIssueToIssue;
 import com.app.issue.converter.IssueToIssueView;
-import com.app.issue.dto.CreateIssue;
-import com.app.issue.dto.IssueView;
+import com.app.issue.dto.CreateIssueRequest;
+import com.app.issue.dto.IssueResponse;
 import com.app.issue.entity.Issue;
 import com.app.issue.repository.IssueRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-
 import static org.mockito.Mockito.*;
 
 public class IssueServiceImplTest {
@@ -43,11 +41,11 @@ public class IssueServiceImplTest {
 
     @Test
     public void createWithValidObjectWillCreateAndReturnNewObject() {
-        CreateIssue createIssue = Mockito.mock(CreateIssue.class);
-        Issue issue = Mockito.mock(Issue.class);
-        when(createIssueToIssue.convert(createIssue)).thenReturn(issue);
+        CreateIssueRequest createIssueRequest = mock(CreateIssueRequest.class);
+        Issue issue = mock(Issue.class);
+        when(createIssueToIssue.convert(createIssueRequest)).thenReturn(issue);
 
-        Issue createdIssue = issueService.create(createIssue);
+        Issue createdIssue = issueService.create(createIssueRequest);
 
         assertSame(issue, createdIssue);
 
@@ -65,8 +63,8 @@ public class IssueServiceImplTest {
         List<Issue> issues = Lists.newArrayList(issue);
         when(issueRepository.findAll()).thenReturn(issues);
 
-        List<IssueView> issueViews = issueService.findAll();
-        assertEquals(1, issueViews.size());
+        List<IssueResponse> issueResponses = issueService.findAll();
+        assertEquals(1, issueResponses.size());
 
         verify(issueToIssueView, times(1)).convert(issue);
     }
@@ -75,8 +73,8 @@ public class IssueServiceImplTest {
     public void findAllWillReturnEmptyList() {
         when(issueRepository.findAll()).thenReturn(new ArrayList<>());
 
-        List<IssueView> issueViews = issueService.findAll();
-        assertTrue(issueViews.isEmpty());
+        List<IssueResponse> issueResponses = issueService.findAll();
+        assertTrue(issueResponses.isEmpty());
 
         verify(issueToIssueView, times(0)).convert(any());
     }
@@ -84,19 +82,19 @@ public class IssueServiceImplTest {
     @Test
     public void findByIdWillReturnEmpty() {
         when(issueRepository.findById(1L)).thenReturn(Optional.empty());
-        Optional<IssueView> result = issueService.findById(1L);
+        Optional<IssueResponse> result = issueService.findById(1L);
         assertFalse(result.isPresent());
     }
 
-    public Optional<IssueView> findByIde(Long id) {
+    public Optional<IssueResponse> findByIde(Long id) {
         Optional<Issue> issue = issueRepository.findById(id);
         if (!issue.isPresent()) {
             return Optional.empty();
         }
 
-        IssueView issueView = issueToIssueView.convert(issue.get());
+        IssueResponse issueResponse = issueToIssueView.convert(issue.get());
 
-        return Optional.of(issueView);
+        return Optional.of(issueResponse);
     }
 
     @Test
@@ -105,14 +103,13 @@ public class IssueServiceImplTest {
         Optional<Issue> optional = Optional.of(issue);
         when(issueRepository.findById(1L)).thenReturn(optional);
 
-        IssueView issueView = mock(IssueView.class);
-        when(issueToIssueView.convert(optional.get())).thenReturn(issueView);
+        IssueResponse issueResponse = mock(IssueResponse.class);
+        when(issueToIssueView.convert(optional.get())).thenReturn(issueResponse);
 
-        Optional<IssueView> optionalIssueView = issueService.findById(1L);
+        Optional<IssueResponse> optionalIssueView = issueService.findById(1L);
 
         assertTrue(optionalIssueView.isPresent());
-        assertSame(issueView, optionalIssueView.get());
-
+        assertSame(issueResponse, optionalIssueView.get());
     }
 
 }
